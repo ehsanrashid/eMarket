@@ -20,30 +20,30 @@ std::vector<char> RequestHandler::respond(
     try {
         std::unique_ptr<Message> message = nullptr;
 
-        SBE::MessageHeader sbeMessageHeader;
+        SBE::MessageHeader messageHeader;
         auto *base = reinterpret_cast<char *>(
             const_cast<uint8_t *>(fragmentData.atomicBuffer.buffer()));
         auto *start = base + fragmentData.offset;
 
         auto bufferLength = fragmentData.length;
-        sbeMessageHeader.wrap(start, 0, 0, bufferLength);
-        auto offset = sbeMessageHeader.encodedLength();
-        auto blockLength = sbeMessageHeader.blockLength();
-        auto version = sbeMessageHeader.version();
+        messageHeader.wrap(start, 0, 0, bufferLength);
+        auto offset = messageHeader.encodedLength();
+        auto blockLength = messageHeader.blockLength();
+        auto version = messageHeader.version();
 
-        switch (sbeMessageHeader.templateId()) {
+        switch (messageHeader.templateId()) {
             case SBE::RegistrationRequest::sbeTemplateId(): {
-                SBE::RegistrationRequest sbeRegistrationRequest;
-                sbeRegistrationRequest.wrapForDecode(start, offset, blockLength,
-                                                     version, bufferLength);
+                SBE::RegistrationRequest registrationRequest;
+                registrationRequest.wrapForDecode(start, offset, blockLength,
+                                                  version, bufferLength);
 
-                auto &appHeader = sbeRegistrationRequest.header();
+                auto &appHeader = registrationRequest.header();
 
                 // auto msgType = std::stoi(appHeader.getMessageTypeAsString());
                 auto msgId = std::stoi(appHeader.getMessageIdAsString());
 
                 auto phoneNumber =
-                    sbeRegistrationRequest.phoneNumber().getVAsStringView();
+                    registrationRequest.phoneNumber().getVAsStringView();
 
                 message =
                     std::make_unique<RegistrationMessage>(msgId, phoneNumber);
