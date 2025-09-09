@@ -1,16 +1,31 @@
 #include "Message.h"
 
+#include <regex>
+
 #include "loggerlib.h"
 
 Message::Message(MessageType mType, int mId) noexcept
     : msgType(mType), msgId(mId) {}
 
-OrderMessage::OrderMessage(int msgId, std::string sym, int qty,
+RegistrationMessage::RegistrationMessage(int msgId,
+                                         std::string_view phoneNum) noexcept
+    : Message(MT_REGISTRATION, msgId), phoneNumber(phoneNum) {}
+
+StepResult RegistrationMessage::validate() const noexcept {
+    qLogger::get().info_fast("Registration {} Validate phoneNumber={}", msgId,
+                             phoneNumber);
+
+    std::regex phoneRegex("^\\+92\\d{10}$");
+
+    if (!regex_match(phoneNumber, phoneRegex)) {
+        return StepResult::FAILED;
+    }
+    return StepResult::SUCCESS;
+}
+
+OrderMessage::OrderMessage(int msgId, std::string_view sym, int qty,
                            double prc) noexcept
-    : Message(MT_ORDER, msgId),
-      symbol(std::move(sym)),
-      quantity(qty),
-      price(prc) {}
+    : Message(MT_ORDER, msgId), symbol(sym), quantity(qty), price(prc) {}
 
 StepResult OrderMessage::validate() const noexcept {
     qLogger::get().info_fast("Order {} Validate symbol={}", msgId, symbol);

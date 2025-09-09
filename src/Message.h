@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <string_view>
 
 #include "MessageType.h"
 
@@ -15,9 +16,21 @@ class Message {
     int msgId;
 };
 
+class RegistrationMessage final : public Message {
+   public:
+    RegistrationMessage(int msgId, std::string_view phoneNum) noexcept;
+
+    ~RegistrationMessage() noexcept = default;
+
+    StepResult validate() const noexcept;
+
+   public:
+    std::string phoneNumber;
+};
+
 class OrderMessage final : public Message {
    public:
-    OrderMessage(int msgId, std::string sym, int qty, double prc) noexcept;
+    OrderMessage(int msgId, std::string_view sym, int qty, double prc) noexcept;
 
     ~OrderMessage() noexcept = default;
 
