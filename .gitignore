@@ -41,3 +41,5 @@ Makefile
 
 # Log files
 *.log
+
+src/SBE/output/
