@@ -45,9 +45,8 @@ std::vector<char> RequestHandler::respond(
                 auto phoneNumber =
                     sbeRegistrationRequest.phoneNumber().getVAsStringView();
 
-                // message =
-                //     std::make_unique<RegistrationMessage>(msgId,
-                //     phoneNumber);
+                message =
+                    std::make_unique<RegistrationMessage>(msgId, phoneNumber);
             } break;
 
             default:;
