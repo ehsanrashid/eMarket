@@ -1,34 +1,34 @@
 /* Generated SBE (Simple Binary Encoding) message codec */
-#ifndef _MY_APP_MESSAGES_MESSAGEHEADER_CXX_H_
-#define _MY_APP_MESSAGES_MESSAGEHEADER_CXX_H_
+#ifndef _SBE_MESSAGEHEADER_CXX_H_
+#define _SBE_MESSAGEHEADER_CXX_H_
 
 #if __cplusplus >= 201103L
-#define SBE_CONSTEXPR constexpr
-#define SBE_NOEXCEPT noexcept
+#  define SBE_CONSTEXPR constexpr
+#  define SBE_NOEXCEPT noexcept
 #else
-#define SBE_CONSTEXPR
-#define SBE_NOEXCEPT
+#  define SBE_CONSTEXPR
+#  define SBE_NOEXCEPT
 #endif
 
 #if __cplusplus >= 201703L
-#include <string_view>
-#define SBE_NODISCARD [[nodiscard]]
-#if !defined(SBE_USE_STRING_VIEW)
-#define SBE_USE_STRING_VIEW 1
-#endif
+#  include <string_view>
+#  define SBE_NODISCARD [[nodiscard]]
+#  if !defined(SBE_USE_STRING_VIEW)
+#    define SBE_USE_STRING_VIEW 1
+#  endif
 #else
-#define SBE_NODISCARD
+#  define SBE_NODISCARD
 #endif
 
 #if __cplusplus >= 202002L
-#include <span>
-#if !defined(SBE_USE_SPAN)
-#define SBE_USE_SPAN 1
-#endif
+#  include <span>
+#  if !defined(SBE_USE_SPAN)
+#    define SBE_USE_SPAN 1
+#  endif
 #endif
 
 #if !defined(__STDC_LIMIT_MACROS)
-#define __STDC_LIMIT_MACROS 1
+#  define __STDC_LIMIT_MACROS 1
 #endif
 
 #include <cstdint>
@@ -43,39 +43,39 @@
 #include <vector>
 
 #if defined(WIN32) || defined(_WIN32)
-#define SBE_BIG_ENDIAN_ENCODE_16(v) _byteswap_ushort(v)
-#define SBE_BIG_ENDIAN_ENCODE_32(v) _byteswap_ulong(v)
-#define SBE_BIG_ENDIAN_ENCODE_64(v) _byteswap_uint64(v)
-#define SBE_LITTLE_ENDIAN_ENCODE_16(v) (v)
-#define SBE_LITTLE_ENDIAN_ENCODE_32(v) (v)
-#define SBE_LITTLE_ENDIAN_ENCODE_64(v) (v)
+#  define SBE_BIG_ENDIAN_ENCODE_16(v) _byteswap_ushort(v)
+#  define SBE_BIG_ENDIAN_ENCODE_32(v) _byteswap_ulong(v)
+#  define SBE_BIG_ENDIAN_ENCODE_64(v) _byteswap_uint64(v)
+#  define SBE_LITTLE_ENDIAN_ENCODE_16(v) (v)
+#  define SBE_LITTLE_ENDIAN_ENCODE_32(v) (v)
+#  define SBE_LITTLE_ENDIAN_ENCODE_64(v) (v)
 #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-#define SBE_BIG_ENDIAN_ENCODE_16(v) __builtin_bswap16(v)
-#define SBE_BIG_ENDIAN_ENCODE_32(v) __builtin_bswap32(v)
-#define SBE_BIG_ENDIAN_ENCODE_64(v) __builtin_bswap64(v)
-#define SBE_LITTLE_ENDIAN_ENCODE_16(v) (v)
-#define SBE_LITTLE_ENDIAN_ENCODE_32(v) (v)
-#define SBE_LITTLE_ENDIAN_ENCODE_64(v) (v)
+#  define SBE_BIG_ENDIAN_ENCODE_16(v) __builtin_bswap16(v)
+#  define SBE_BIG_ENDIAN_ENCODE_32(v) __builtin_bswap32(v)
+#  define SBE_BIG_ENDIAN_ENCODE_64(v) __builtin_bswap64(v)
+#  define SBE_LITTLE_ENDIAN_ENCODE_16(v) (v)
+#  define SBE_LITTLE_ENDIAN_ENCODE_32(v) (v)
+#  define SBE_LITTLE_ENDIAN_ENCODE_64(v) (v)
 #elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-#define SBE_LITTLE_ENDIAN_ENCODE_16(v) __builtin_bswap16(v)
-#define SBE_LITTLE_ENDIAN_ENCODE_32(v) __builtin_bswap32(v)
-#define SBE_LITTLE_ENDIAN_ENCODE_64(v) __builtin_bswap64(v)
-#define SBE_BIG_ENDIAN_ENCODE_16(v) (v)
-#define SBE_BIG_ENDIAN_ENCODE_32(v) (v)
-#define SBE_BIG_ENDIAN_ENCODE_64(v) (v)
+#  define SBE_LITTLE_ENDIAN_ENCODE_16(v) __builtin_bswap16(v)
+#  define SBE_LITTLE_ENDIAN_ENCODE_32(v) __builtin_bswap32(v)
+#  define SBE_LITTLE_ENDIAN_ENCODE_64(v) __builtin_bswap64(v)
+#  define SBE_BIG_ENDIAN_ENCODE_16(v) (v)
+#  define SBE_BIG_ENDIAN_ENCODE_32(v) (v)
+#  define SBE_BIG_ENDIAN_ENCODE_64(v) (v)
 #else
-#error \
-    "Byte Ordering of platform not determined. Set __BYTE_ORDER__ manually before including this file."
+#  error \
+      "Byte Ordering of platform not determined. Set __BYTE_ORDER__ manually before including this file."
 #endif
 
 #if !defined(SBE_BOUNDS_CHECK_EXPECT)
-#if defined(SBE_NO_BOUNDS_CHECK)
-#define SBE_BOUNDS_CHECK_EXPECT(exp, c) (false)
-#elif defined(_MSC_VER)
-#define SBE_BOUNDS_CHECK_EXPECT(exp, c) (exp)
-#else
-#define SBE_BOUNDS_CHECK_EXPECT(exp, c) (__builtin_expect(exp, c))
-#endif
+#  if defined(SBE_NO_BOUNDS_CHECK)
+#    define SBE_BOUNDS_CHECK_EXPECT(exp, c) (false)
+#  elif defined(_MSC_VER)
+#    define SBE_BOUNDS_CHECK_EXPECT(exp, c) (exp)
+#  else
+#    define SBE_BOUNDS_CHECK_EXPECT(exp, c) (__builtin_expect(exp, c))
+#  endif
 
 #endif
 
@@ -90,7 +90,7 @@
 #define SBE_NULLVALUE_UINT32 (std::numeric_limits<std::uint32_t>::max)()
 #define SBE_NULLVALUE_UINT64 (std::numeric_limits<std::uint64_t>::max)()
 
-namespace messages {
+namespace SBE {
 
 class MessageHeader {
    private:
@@ -416,6 +416,6 @@ class MessageHeader {
     }
 };
 
-}  // namespace messages
+}  // namespace SBE
 
 #endif
