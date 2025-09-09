@@ -41,7 +41,7 @@ std::vector<char> RequestHandler::respond(
 
                 // TODO::should pass message id
                 int msgId = 0;
-                //message = std::make_unique<RegistrationMessage>(msgId);
+                // message = std::make_unique<RegistrationMessage>(msgId);
             } break;
 
             default:;

@@ -6,16 +6,16 @@
 enum class StepResult { SUCCESS, FAILED };
 
 enum MessageType : std::int8_t {
-    MT_ORDER,
+    MT_ORDER = 1,
     MT_CANCEL,
 };
 
 // Get message type constants as string for debugging
 inline std::string msgtype_to_string(MessageType msgType) noexcept {
     switch (msgType) {
-        case MessageType::MT_ORDER:
+        case MT_ORDER:
             return "MT_ORDER";
-        case MessageType::MT_CANCEL:
+        case MT_CANCEL:
             return "MT_CANCEL";
         default:
             return "UNKNOWN";
