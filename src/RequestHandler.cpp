@@ -1,6 +1,7 @@
 #include "RequestHandler.h"
 
 #include <exception>
+#include <memory>
 
 #include "Message.h"
 #include "MessageFlow.h"
@@ -36,12 +37,17 @@ std::vector<char> RequestHandler::respond(
                 sbeRegistrationRequest.wrapForDecode(start, offset, blockLength,
                                                      version, bufferLength);
 
+                auto &appHeader = sbeRegistrationRequest.header();
+
+                // auto msgType = std::stoi(appHeader.getMessageTypeAsString());
+                auto msgId = std::stoi(appHeader.getMessageIdAsString());
+
                 auto phoneNumber =
                     sbeRegistrationRequest.phoneNumber().getVAsStringView();
 
-                // TODO::should pass message id
-                int msgId = 0;
-                // message = std::make_unique<RegistrationMessage>(msgId);
+                // message =
+                //     std::make_unique<RegistrationMessage>(msgId,
+                //     phoneNumber);
             } break;
 
             default:;
