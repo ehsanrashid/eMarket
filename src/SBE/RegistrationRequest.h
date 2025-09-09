@@ -111,7 +111,7 @@ class RegistrationRequest {
 
    public:
     static constexpr std::uint16_t SBE_BLOCK_LENGTH =
-        static_cast<std::uint16_t>(32);
+        static_cast<std::uint16_t>(304);
     static constexpr std::uint16_t SBE_TEMPLATE_ID =
         static_cast<std::uint16_t>(101);
     static constexpr std::uint16_t SBE_SCHEMA_ID =
@@ -159,7 +159,7 @@ class RegistrationRequest {
 
     SBE_NODISCARD static SBE_CONSTEXPR std::uint16_t sbeBlockLength()
         SBE_NOEXCEPT {
-        return static_cast<std::uint16_t>(32);
+        return static_cast<std::uint16_t>(304);
     }
 
     SBE_NODISCARD static SBE_CONSTEXPR std::uint64_t sbeBlockAndHeaderLength()
@@ -338,7 +338,7 @@ class RegistrationRequest {
 
     SBE_NODISCARD static SBE_CONSTEXPR std::size_t phoneNumberEncodingOffset()
         SBE_NOEXCEPT {
-        return 16;
+        return 288;
     }
 
    private:
@@ -346,7 +346,7 @@ class RegistrationRequest {
 
    public:
     SBE_NODISCARD Char16str &phoneNumber() {
-        m_phoneNumber.wrap(m_buffer, m_offset + 16, m_actingVersion,
+        m_phoneNumber.wrap(m_buffer, m_offset + 288, m_actingVersion,
                            m_bufferLength);
         return m_phoneNumber;
     }

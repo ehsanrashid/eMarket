@@ -111,7 +111,7 @@ class RegistrationResponse {
 
    public:
     static constexpr std::uint16_t SBE_BLOCK_LENGTH =
-        static_cast<std::uint16_t>(144);
+        static_cast<std::uint16_t>(420);
     static constexpr std::uint16_t SBE_TEMPLATE_ID =
         static_cast<std::uint16_t>(102);
     static constexpr std::uint16_t SBE_SCHEMA_ID =
@@ -159,7 +159,7 @@ class RegistrationResponse {
 
     SBE_NODISCARD static SBE_CONSTEXPR std::uint16_t sbeBlockLength()
         SBE_NOEXCEPT {
-        return static_cast<std::uint16_t>(144);
+        return static_cast<std::uint16_t>(420);
     }
 
     SBE_NODISCARD static SBE_CONSTEXPR std::uint64_t sbeBlockAndHeaderLength()
@@ -336,7 +336,7 @@ class RegistrationResponse {
 
     SBE_NODISCARD static SBE_CONSTEXPR std::size_t messageEncodingOffset()
         SBE_NOEXCEPT {
-        return 16;
+        return 288;
     }
 
    private:
@@ -344,7 +344,7 @@ class RegistrationResponse {
 
    public:
     SBE_NODISCARD Char64str &message() {
-        m_message.wrap(m_buffer, m_offset + 16, m_actingVersion,
+        m_message.wrap(m_buffer, m_offset + 288, m_actingVersion,
                        m_bufferLength);
         return m_message;
     }
@@ -370,7 +370,7 @@ class RegistrationResponse {
 
     SBE_NODISCARD static SBE_CONSTEXPR std::size_t tokenEncodingOffset()
         SBE_NOEXCEPT {
-        return 80;
+        return 352;
     }
 
    private:
@@ -378,8 +378,62 @@ class RegistrationResponse {
 
    public:
     SBE_NODISCARD Char32str &token() {
-        m_token.wrap(m_buffer, m_offset + 80, m_actingVersion, m_bufferLength);
+        m_token.wrap(m_buffer, m_offset + 352, m_actingVersion, m_bufferLength);
         return m_token;
+    }
+
+    SBE_NODISCARD static const char *expiresInMetaAttribute(
+        const MetaAttribute metaAttribute) SBE_NOEXCEPT {
+        switch (metaAttribute) {
+            case MetaAttribute::SEMANTIC_TYPE:
+                return "Duration";
+            case MetaAttribute::PRESENCE:
+                return "required";
+            default:
+                return "";
+        }
+    }
+
+    static SBE_CONSTEXPR std::uint16_t expiresInId() SBE_NOEXCEPT { return 4; }
+
+    SBE_NODISCARD static SBE_CONSTEXPR std::uint64_t expiresInSinceVersion()
+        SBE_NOEXCEPT {
+        return 0;
+    }
+
+    SBE_NODISCARD bool expiresInInActingVersion() SBE_NOEXCEPT { return true; }
+
+    SBE_NODISCARD static SBE_CONSTEXPR std::size_t expiresInEncodingOffset()
+        SBE_NOEXCEPT {
+        return 384;
+    }
+
+    static SBE_CONSTEXPR std::uint32_t expiresInNullValue() SBE_NOEXCEPT {
+        return SBE_NULLVALUE_UINT32;
+    }
+
+    static SBE_CONSTEXPR std::uint32_t expiresInMinValue() SBE_NOEXCEPT {
+        return UINT32_C(0x0);
+    }
+
+    static SBE_CONSTEXPR std::uint32_t expiresInMaxValue() SBE_NOEXCEPT {
+        return UINT32_C(0xfffffffe);
+    }
+
+    static SBE_CONSTEXPR std::size_t expiresInEncodingLength() SBE_NOEXCEPT {
+        return 4;
+    }
+
+    SBE_NODISCARD std::uint32_t expiresIn() const SBE_NOEXCEPT {
+        std::uint32_t val;
+        std::memcpy(&val, m_buffer + m_offset + 384, sizeof(std::uint32_t));
+        return SBE_LITTLE_ENDIAN_ENCODE_32(val);
+    }
+
+    RegistrationResponse &expiresIn(const std::uint32_t value) SBE_NOEXCEPT {
+        std::uint32_t val = SBE_LITTLE_ENDIAN_ENCODE_32(value);
+        std::memcpy(m_buffer + m_offset + 384, &val, sizeof(std::uint32_t));
+        return *this;
     }
 
     SBE_NODISCARD static const char *refreshTokenMetaAttribute(
@@ -407,7 +461,7 @@ class RegistrationResponse {
 
     SBE_NODISCARD static SBE_CONSTEXPR std::size_t refreshTokenEncodingOffset()
         SBE_NOEXCEPT {
-        return 112;
+        return 388;
     }
 
    private:
@@ -415,7 +469,7 @@ class RegistrationResponse {
 
    public:
     SBE_NODISCARD Char32str &refreshToken() {
-        m_refreshToken.wrap(m_buffer, m_offset + 112, m_actingVersion,
+        m_refreshToken.wrap(m_buffer, m_offset + 388, m_actingVersion,
                             m_bufferLength);
         return m_refreshToken;
     }
@@ -444,6 +498,10 @@ class RegistrationResponse {
         builder << ", ";
         builder << R"("token": )";
         builder << writer.token();
+
+        builder << ", ";
+        builder << R"("expiresIn": )";
+        builder << +writer.expiresIn();
 
         builder << ", ";
         builder << R"("refreshToken": )";
