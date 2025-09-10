@@ -21,7 +21,7 @@
       <type name="v" primitiveType="char" length="64"/>
     </composite>
 
-    <composite name="MessageHeader" description="SBE Standard Message Header">
+    <composite name="messageHeader" description="SBE Standard Message Header">
       <type name="blockLength"  primitiveType="uint16"/>
       <type name="templateId"   primitiveType="uint16"/>
       <type name="schemaId"     primitiveType="uint16"/>
