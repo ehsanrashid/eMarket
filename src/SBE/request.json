@@ -1,6 +1,6 @@
 {
   "RegistrationRequest": {
-    "hdr": {
+    "header": {
       "version": 1,
       "messageType": "REG_REQ",
       "messageId": "121",

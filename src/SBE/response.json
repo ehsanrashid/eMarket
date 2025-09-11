@@ -6,11 +6,11 @@
     "version": 1
   },
   "RegistrationResponse": {
-    "hdr": {
+    "header": {
       "version": 1,
-      "transactionCode": "102911",
-      "transactionId": "121",
       "messageType": "REG_REQ",
+      "messageId": "121",
+      "messageCode": "102911",
       "sequence": 42,
       "timestamp": 1725421234567890000,
       "statusCode": 0,
